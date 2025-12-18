@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Anniversary Passcode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      /* 🌸 White-ish background with cute SVG stars & flowers pattern */
+      background-color: #fffdfd;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cpolygon%20points%3D%2220,5%2024,16%2036,16%2026,23%2030,35%2020,28%2010,35%2014,23%204,16%2016,16%22%20fill%3D%22%23FDE5F4%22/%3E%3Cg%20transform%3D%22translate(90,30)%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%223.2%22%20fill%3D%22%23FB7185%22/%3E%3Ccircle%20cx%3D%220%22%20cy%3D%22-6%22%20r%3D%223.2%22%20fill%3D%22%23FED7E2%22/%3E%3Ccircle%20cx%3D%225%22%20cy%3D%22-3%22%20r%3D%223.2%22%20fill%3D%22%23FED7E2%22/%3E%3Ccircle%20cx%3D%225%22%20cy%3D%223%22%20r%3D%223.2%22%20fill%3D%22%23FED7E2%22/%3E%3Ccircle%20cx%3D%220%22%20cy%3D%226%22%20r%3D%223.2%22%20fill%3D%22%23FED7E2%22/%3E%3Ccircle%20cx%3D%22-5%22%20cy%3D%223%22%20r%3D%223.2%22%20fill%3D%22%23FED7E2%22/%3E%3Ccircle%20cx%3D%22-5%22%20cy%3D%22-3%22%20r%3D%223.2%22%20fill%3D%22%23FED7E2%22/%3E%3C/g%3E%3Cpath%20d%3D%22M100%2088C98%2084%2092%2084%2092%2088C92%2092%2096%2095%20100%2098C104%2095%20108%2092%20108%2088C108%2084%20102%2084%20100%2088Z%22%20fill%3D%22%23FDE68A%22/%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2295%22%20r%3D%222%22%20fill%3D%22%23BFDBFE%22/%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%22105%22%20r%3D%221.8%22%20fill%3D%22%23BFDBFE%22/%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%22115%22%20r%3D%221.5%22%20fill%3D%22%23BFDBFE%22/%3E%3C/svg%3E");
+      background-size: 140px 140px;
+      background-attachment: fixed;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Poppins", sans-serif;
+    }
+
+    .pass-star {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+    .pass-star.filled {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 10px rgba(255, 182, 193, 0.6);
+      background-color: #f9a8d4;
+      color: #fff;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-4px); }
+      40%, 80% { transform: translateX(4px); }
+    }
+    .shake {
+      animation: shake 0.3s ease-in-out;
+    }
+
+    /* Border color for numeric key buttons */
+    .key-btn {
+      border-color: black !important;
+    }
+
+    /* Loading overlay with 💌 */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 228, 241, 0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .loading-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .loading-envelope {
+      font-size: 3rem;
+      animation: float 1s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+
+  <!-- SIDE DECORATIVE BORDERS -->
+  <div class="pointer-events-none absolute inset-y-0 left-2 w-2 rounded-full bg-gradient-to-b from-pink-300/70 via-pink-200/40 to-pink-300/70 shadow-lg"></div>
+  <div class="pointer-events-none absolute inset-y-0 right-2 w-2 rounded-full bg-gradient-to-b from-pink-300/70 via-pink-200/40 to-pink-300/70 shadow-lg"></div>
+
+  <!-- MAIN CARD -->
+  <div
+    class="w-full max-w-[320px] sm:max-w-sm bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-pink-100 flex flex-col items-center pt-4 pb-6 px-5 gap-4 relative"
+  >
+    <!-- Tiny heart at top -->
+    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-pink-400 shadow-md flex items-center justify-center text-white text-lg">
+      ♥
+    </div>
+
+    <!-- Top image -->
+    <div class="w-full rounded-2xl overflow-hidden border border-pink-200 shadow-md mt-3">
+      <!-- Replace src with your own image URL -->
+      <img
+        src="./icon.jpg"
+        alt="Cute Anniversary Art"
+        class="w-full h-32 object-cover sm:h-36"
+      />
+    </div>
+
+    <!-- Stars -->
+    <div class="flex items-center justify-center gap-3 mt-1">
+      <div
+        class="pass-star star w-9 h-9 rounded-full bg-pink-100 shadow-inner flex items-center justify-center text-sm"
+        data-index="0"
+      >
+        ★
+      </div>
+      <div
+        class="pass-star star w-9 h-9 rounded-full bg-sky-100 shadow-inner flex items-center justify-center text-sm"
+        data-index="1"
+      >
+        ★
+      </div>
+      <div
+        class="pass-star star w-9 h-9 rounded-full bg-purple-100 shadow-inner flex items-center justify-center text-sm"
+        data-index="2"
+      >
+        ★
+      </div>
+    </div>
+
+    <!-- Text -->
+    <div class="text-center mt-1 space-y-1">
+      <h2 class="text-base sm:text-lg font-semibold text-gray-800 tracking-wide">
+        Enter Anniversary Passcode
+      </h2>
+      <p class="text-[11px] sm:text-xs text-gray-500">
+        Hint: the day we became us
+      </p>
+      <p id="error-text" class="text-[11px] sm:text-xs text-red-500 mt-1 hidden">
+        Oops, wrong passcode. Try again 💗
+      </p>
+    </div>
+
+    <!-- Keypad -->
+    <div id="keypad-wrapper" class="mt-2">
+      <div class="grid grid-cols-3 gap-3">
+        <!-- 1–9 -->
+        <button class="key-btn">1</button>
+        <button class="key-btn">2</button>
+        <button class="key-btn">3</button>
+        <button class="key-btn">4</button>
+        <button class="key-btn">5</button>
+        <button class="key-btn">6</button>
+        <button class="key-btn">7</button>
+        <button class="key-btn">8</button>
+        <button class="key-btn">9</button>
+
+        <!-- Last row: empty, 0, backspace -->
+        <div></div>
+        <button class="key-btn">0</button>
+        <button id="backspace-btn"
+          class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-pink-200 to-pink-300 text-white text-lg sm:text-xl font-semibold shadow-md flex items-center justify-center active:scale-95 transition-transform border border-pink-300 hover:-translate-y-0.5"
+        >
+          ⌫
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading overlay with 💌 -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="loading-envelope">💌</div>
+    <p class="mt-3 text-sm sm:text-base text-pink-600 font-medium">
+      Unlocking your anniversary surprise...
+    </p>
+  </div>
+
+  <!-- JS -->
+  <script>
+    // Style numeric buttons with Tailwind classes
+    document.querySelectorAll(".key-btn").forEach((btn) => {
+      btn.classList.add(
+        "w-14",
+        "h-14",
+        "sm:w-16",
+        "sm:h-16",
+        "rounded-2xl",
+        "bg-gradient-to-b",
+        "from-pink-400",
+        "to-rose-400",
+        "text-white",
+        "text-lg",
+        "sm:text-xl",
+        "font-semibold",
+        "shadow-md",
+        "flex",
+        "items-center",
+        "justify-center",
+        "active:scale-95",
+        "transition-transform",
+        "border",
+        "border-pink-300",
+        "hover:-translate-y-0.5"
+      );
+    });
+
+    const PASSCODE = "123"; // <--- change this to her special digits
+    const maxDigits = PASSCODE.length;
+    let entered = "";
+
+    const stars = document.querySelectorAll(".star");
+    const keypadWrapper = document.getElementById("keypad-wrapper");
+    const errorText = document.getElementById("error-text");
+    const backspaceBtn = document.getElementById("backspace-btn");
+    const loadingOverlay = document.getElementById("loading-overlay");
+
+    function updateStars() {
+      stars.forEach((star, index) => {
+        if (index < entered.length) {
+          star.classList.add("filled");
+        } else {
+          star.classList.remove("filled");
+        }
+      });
+    }
+
+    function resetInput(showError = false) {
+      entered = "";
+      updateStars();
+      if (showError) {
+        errorText.classList.remove("hidden");
+        keypadWrapper.classList.add("shake");
+        setTimeout(() => keypadWrapper.classList.remove("shake"), 300);
+      } else {
+        errorText.classList.add("hidden");
+      }
+    }
+
+    function checkCode() {
+      if (entered === PASSCODE) {
+        errorText.classList.add("hidden");
+        // Show loading overlay then go to next page
+        loadingOverlay.classList.add("show");
+        setTimeout(() => {
+          window.location.href = "wish.html"; // change to your actual page
+        }, 1200);
+      } else {
+        resetInput(true);
+      }
+    }
+
+    document.querySelectorAll(".key-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        errorText.classList.add("hidden");
+        if (entered.length >= maxDigits) return;
+        entered += btn.textContent.trim();
+        updateStars();
+        if (entered.length === maxDigits) {
+          setTimeout(checkCode, 200);
+        }
+      });
+    });
+
+    backspaceBtn.addEventListener("click", () => {
+      if (!entered.length) return;
+      entered = entered.slice(0, -1);
+      updateStars();
+    });
+  </script>
+</body>
+</html>

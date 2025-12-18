@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Anniversary Invite Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Poppins", sans-serif;
+      background: radial-gradient(circle at top, #ffffff, #fff9fc, #ffeef7);
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      opacity: 1;
+    }
+
+    /* Soft confetti dots */
+    .confetti-dot {
+      position: absolute;
+      border-radius: 999px;
+      opacity: 0.7;
+      filter: blur(1px);
+      animation: floatUp 12s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(20px) scale(1);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(-120vh) scale(1.1);
+        opacity: 0;
+      }
+    }
+
+    /* SVG flower background */
+    .bg-flower {
+      position: absolute;
+      opacity: 0.18;
+      z-index: 0;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.06));
+      animation: slowFloat 24s linear infinite;
+    }
+
+    .bg-flower.small {
+      opacity: 0.2;
+      animation-duration: 28s;
+    }
+
+    .bg-flower.reverse {
+      animation-direction: reverse;
+    }
+
+    @keyframes slowFloat {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-18px) rotate(5deg);
+      }
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+    }
+
+    /* Smooth fade when leaving */
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+    }
+
+    /* Glow animation on card */
+    .card-glow {
+      box-shadow:
+        0 18px 45px rgba(255, 126, 179, 0.32),
+        0 0 0 1px rgba(255, 180, 210, 0.4);
+    }
+
+    /* Pulse on button */
+    .pulse-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 999px;
+      border: 2px solid rgba(255, 188, 214, 0.6);
+      animation: pulse 1.8s ease-out infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.9);
+        opacity: 0.9;
+      }
+      100% {
+        transform: scale(1.2);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center px-4">
+
+  <!-- SVG FLOWER BACKGROUND (big + small, pink / purple / red) -->
+  <!-- Big flower - left -->
+  <svg class="bg-flower" style="width:140px; height:140px; top:8%; left:4%;">
+    <g transform="translate(70,70)">
+      <circle r="26" fill="#f472b6"></circle>
+      <circle r="18" fill="#fb7185"></circle>
+      <!-- petals -->
+      <circle r="12" fill="#f9a8d4" transform="translate(0,-40)"></circle>
+      <circle r="12" fill="#f9a8d4" transform="translate(34,-20)"></circle>
+      <circle r="12" fill="#f9a8d4" transform="translate(34,20)"></circle>
+      <circle r="12" fill="#f9a8d4" transform="translate(0,40)"></circle>
+      <circle r="12" fill="#f9a8d4" transform="translate(-34,20)"></circle>
+      <circle r="12" fill="#f9a8d4" transform="translate(-34,-20)"></circle>
+    </g>
+  </svg>
+
+  <!-- Big flower - right -->
+  <svg class="bg-flower reverse" style="width:160px; height:160px; top:14%; right:-10px;">
+    <g transform="translate(80,80)">
+      <circle r="28" fill="#a855f7"></circle>
+      <circle r="20" fill="#c4b5fd"></circle>
+      <circle r="13" fill="#e879f9" transform="translate(0,-44)"></circle>
+      <circle r="13" fill="#e879f9" transform="translate(38,-22)"></circle>
+      <circle r="13" fill="#e879f9" transform="translate(38,22)"></circle>
+      <circle r="13" fill="#e879f9" transform="translate(0,44)"></circle>
+      <circle r="13" fill="#e879f9" transform="translate(-38,22)"></circle>
+      <circle r="13" fill="#e879f9" transform="translate(-38,-22)"></circle>
+    </g>
+  </svg>
+
+  <!-- Medium flower - bottom left -->
+  <svg class="bg-flower small" style="width:90px; height:90px; bottom:10%; left:10%;">
+    <g transform="translate(45,45)">
+      <circle r="18" fill="#fb7185"></circle>
+      <circle r="10" fill="#fee2e2"></circle>
+      <circle r="8" fill="#fecaca" transform="translate(0,-26)"></circle>
+      <circle r="8" fill="#fecaca" transform="translate(22,-13)"></circle>
+      <circle r="8" fill="#fecaca" transform="translate(22,13)"></circle>
+      <circle r="8" fill="#fecaca" transform="translate(0,26)"></circle>
+      <circle r="8" fill="#fecaca" transform="translate(-22,13)"></circle>
+      <circle r="8" fill="#fecaca" transform="translate(-22,-13)"></circle>
+    </g>
+  </svg>
+
+  <!-- Medium flower - bottom right -->
+  <svg class="bg-flower small reverse" style="width:80px; height:80px; bottom:16%; right:14%;">
+    <g transform="translate(40,40)">
+      <circle r="16" fill="#f97373"></circle>
+      <circle r="9" fill="#fecaca"></circle>
+      <circle r="7" fill="#fed7e2" transform="translate(0,-22)"></circle>
+      <circle r="7" fill="#fed7e2" transform="translate(19,-11)"></circle>
+      <circle r="7" fill="#fed7e2" transform="translate(19,11)"></circle>
+      <circle r="7" fill="#fed7e2" transform="translate(0,22)"></circle>
+      <circle r="7" fill="#fed7e2" transform="translate(-19,11)"></circle>
+      <circle r="7" fill="#fed7e2" transform="translate(-19,-11)"></circle>
+    </g>
+  </svg>
+
+  <!-- Tiny flower near center background -->
+  <svg class="bg-flower small" style="width:60px; height:60px; top:50%; left:4%;">
+    <g transform="translate(30,30)">
+      <circle r="10" fill="#e879f9"></circle>
+      <circle r="6" fill="#fdf2ff"></circle>
+      <circle r="5" fill="#f9a8d4" transform="translate(0,-16)"></circle>
+      <circle r="5" fill="#f9a8d4" transform="translate(14,-8)"></circle>
+      <circle r="5" fill="#f9a8d4" transform="translate(14,8)"></circle>
+      <circle r="5" fill="#f9a8d4" transform="translate(0,16)"></circle>
+      <circle r="5" fill="#f9a8d4" transform="translate(-14,8)"></circle>
+      <circle r="5" fill="#f9a8d4" transform="translate(-14,-8)"></circle>
+    </g>
+  </svg>
+
+  <!-- Floating confetti (simple circles) -->
+  <span class="confetti-dot" style="width:12px;height:12px;background:#ff9fc7;left:8%;animation-delay:0s;"></span>
+  <span class="confetti-dot" style="width:8px;height:8px;background:#ffcce5;left:25%;animation-delay:2s;"></span>
+  <span class="confetti-dot" style="width:10px;height:10px;background:#ffb3cf;left:42%;animation-delay:4s;"></span>
+  <span class="confetti-dot" style="width:7px;height:7px;background:#ffd7f2;left:63%;animation-delay:1s;"></span>
+  <span class="confetti-dot" style="width:11px;height:11px;background:#ff91c1;left:82%;animation-delay:3s;"></span>
+
+  <!-- Card -->
+  <div class="relative z-10 w-full max-w-md bg-white/95 rounded-[28px] border-[3px] border-[#ff9fc7] card-glow p-5 md:p-6 backdrop-blur-[2px] overflow-hidden">
+
+    <!-- Tiny floating balloons in corner -->
+    <div class="absolute -top-4 -right-1 flex flex-col items-center gap-1 rotate-3 pointer-events-none">
+      <div class="w-7 h-9 rounded-full bg-gradient-to-b from-[#ffe0f5] to-[#ff9fc7] shadow-md"></div>
+      <div class="w-[1px] h-6 bg-[#ff9fc7]/70"></div>
+    </div>
+
+    <!-- Header strip -->
+    <div class="w-full flex justify-center mb-4">
+      <div class="inline-flex items-center gap-2 bg-gradient-to-r from-[#ff9fc7] to-[#ff7fb3] rounded-full px-5 py-2 text-white text-sm font-semibold tracking-wide shadow-sm">
+        <span>You're Invited to Our Anniversary</span>
+        <span class="text-lg">💞</span>
+      </div>
+    </div>
+
+    <!-- Sub heading -->
+    <div class="text-center mb-4">
+      <p class="text-xs uppercase tracking-[0.3em] text-[#ff7fb3] font-semibold mb-1">
+        special day alert
+      </p>
+      <p class="text-lg md:text-xl font-semibold text-gray-800">
+        Hey Anniversary Star ✨
+      </p>
+    </div>
+
+    <!-- Image slider -->
+    <div class="relative rounded-3xl overflow-hidden border-2 border-[#4b4b4b] mb-4 bg-[#ffd5e8] shadow-inner">
+      <!-- Main image (will be replaced by JS from images[0]) -->
+      <img
+        id="mainImage"
+        src="pic3.jpg"
+        alt="Cute anniversary card"
+        class="w-full h-56 object-cover md:h-60"
+      />
+
+      <!-- Gradient overlay bottom -->
+      <div class="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
+
+      <!-- Left arrow -->
+      <button
+        id="prevBtn"
+        class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold shadow-md hover:scale-110 hover:bg-white transition"
+        aria-label="Previous image"
+      >
+        ‹
+      </button>
+
+      <!-- Right arrow -->
+      <button
+        id="nextBtn"
+        class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold shadow-md hover:scale-110 hover:bg-white transition"
+        aria-label="Next image"
+      >
+        ›
+      </button>
+
+      <!-- Tiny slider caption -->
+      <div class="absolute bottom-2 left-1/2 -translate-x-1/2 text-[11px] text-white/90 font-medium px-3 py-1 rounded-full bg-black/35 backdrop-blur">
+        Our little anniversary reel 💗
+      </div>
+    </div>
+
+    <!-- Description text -->
+    <p class="text-center text-xs md:text-sm text-gray-700 mb-4 leading-relaxed">
+      where we celebrate <span class="font-semibold">us</span> — our love, our journey, our memories,
+      and the pure happiness we bring into each other's lives. 💕
+    </p>
+
+    <!-- Second line -->
+    <p class="text-center text-[11px] md:text-xs text-gray-500 mb-5 leading-relaxed">
+      Tap the button below to open your surprise – a little anniversary world made just for you. ✨
+    </p>
+
+    <!-- Tap button -->
+    <div class="flex justify-center mb-3 relative">
+      <button
+        id="tapButton"
+        class="relative bg-gradient-to-r from-[#ff9fc7] to-[#ff7fb3] text-white text-sm font-semibold px-8 py-2.5 rounded-full border border-[#ff7fb3] shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all"
+      >
+        <span class="pulse-ring pointer-events-none"></span>
+        This is for u ✨
+      </button>
+    </div>
+
+    <!-- Tiny note under button -->
+    <p class="text-center text-[11px] text-gray-500 mb-2">
+      (promise: 100% cuteness & 0% boredom)
+    </p>
+
+    <!-- Footer note -->
+    <p class="text-center text-[11px] text-gray-400">
+      Made with so much love, just for you 💌
+    </p>
+  </div>
+
+  <script>
+    // ---------- IMAGE SLIDER ----------
+    const images = [
+      "pic1.jpg",
+      "pic2.jpg",
+      "pic3.jpg",
+      "pic4.jpg",
+    ];
+
+    let currentIndex = 0;
+    const mainImage = document.getElementById("mainImage");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function updateImage() {
+      mainImage.src = images[currentIndex];
+    }
+
+    // Initialize first image
+    updateImage();
+
+    prevBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      updateImage();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateImage();
+    });
+
+    // Auto-slide every 4 seconds
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateImage();
+    }, 4000);
+
+    // ---------- TAP BUTTON REDIRECT ----------
+    const tapButton = document.getElementById("tapButton");
+
+    tapButton.addEventListener("click", () => {
+      document.body.classList.add("fade-out");
+
+      // change this to your real next page URL
+      const nextPage = "letter.html";
+
+      setTimeout(() => {
+        window.location.href = nextPage;
+      }, 600); // match fade duration
+    });
+  </script>
+</body>
+</html>
